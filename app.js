@@ -73,19 +73,27 @@ const deleteTask = (taskId) => {
 };
 //Добавление таски на сервер
 const addTask = () => {
-    fetch('https://jsonplaceholder.typicode.com/todos', {
-        method: 'POST',
-        body: JSON.stringify({
-            title: document.querySelector('#new-todo').value,
-            completed: false,
-            userId: document.querySelector('#user-todo').value,
-        }),
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-        },
-    })
-        .then((response) => response.json())
-        .then((json) => createLiTask(json, 'before'));
+    let textToDo = document.querySelector('#new-todo');
+    let userToDo = document.querySelector('#user-todo');
+    //Валидация
+    if(textToDo.value && userToDo.value !== 'select user'){
+        fetch('https://jsonplaceholder.typicode.com/todos', {
+            method: 'POST',
+            body: JSON.stringify({
+                title: textToDo.value,
+                completed: false,
+                userId: userToDo.value,
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+            .then((response) => response.json())
+            .then((json) => createLiTask(json, 'before'));
+    } else {
+        alert('Проверьте заполненные поля.')
+    }
+
 }
 //Создание таск в списке
 const createLiTask = (obj, insert = 'before') => {
