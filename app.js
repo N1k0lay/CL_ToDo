@@ -46,15 +46,12 @@ const statusTask = (taskId, status) => {
         },
     })
         .then((response) => response.json())
-        .then((json) => {
+        .then(() => {
             document.querySelectorAll('.todo-item').forEach(e => {
-                if (Number(e.getAttribute('key')) === Number(taskId) && json.completed === true) {
-                    e.classList.add('done');
-                } else {
-                    e.classList.remove('done');
+                if (Number(e.getAttribute('key')) === Number(taskId)) {
+                    e.classList.toggle('done');
                 }
             });
-            console.log(json)
         });
 
 };
@@ -96,8 +93,8 @@ const addTask = () => {
 
 }
 //Создание таск в списке
+//insert отвечает за то, в какое место вставлять новую таску, в начало или конец списка
 const createLiTask = (obj, insert = 'before') => {
-    console.log(obj);
     let li = document.createElement("li");
     li.classList.add('todo-item');
     if (obj.completed) {
