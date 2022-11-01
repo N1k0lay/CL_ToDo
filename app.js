@@ -76,7 +76,7 @@ const addTask = () => {
     let textToDo = document.querySelector('#new-todo');
     let userToDo = document.querySelector('#user-todo');
     //Валидация
-    if(textToDo.value && userToDo.value !== 'select user'){
+    if (textToDo.value && userToDo.value !== 'select user') {
         fetch('https://jsonplaceholder.typicode.com/todos', {
             method: 'POST',
             body: JSON.stringify({
@@ -97,11 +97,15 @@ const addTask = () => {
 }
 //Создание таск в списке
 const createLiTask = (obj, insert = 'before') => {
+    console.log(obj);
     let li = document.createElement("li");
     li.classList.add('todo-item');
+    if (obj.completed) {
+        li.classList.add('done')
+    }
     li.setAttribute('key', obj.id);
     li.innerHTML = `
-            <input type="checkbox" onchange="statusTask((Number(this.parentNode.getAttribute('key'))), this.checked)">
+            <input type="checkbox" ${obj.completed && 'checked'} onchange="statusTask((Number(this.parentNode.getAttribute('key'))), this.checked)">
             <span class="task">${obj.title} <em>by</em> <b>${users[obj.userId - 1].name}</b></span>
             <button class="close" onclick="deleteTask((Number(this.parentNode.getAttribute('key'))));">X</button>`;
     insert === 'before' ? todoList.prepend(li) : todoList.append(li);
